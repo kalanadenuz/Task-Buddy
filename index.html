@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Task Buddy - AI Task Manager</title>
+        <link rel="stylesheet" href="styles.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Task Buddy</h1>
+            <div class="user-info">
+                <a href="learn.html" style="color: #667eea; text-decoration: none; margin-right: 15px; font-weight: 600;">🧠 Learn the Science</a>
+                <a href="#" id="adminLink" style="color: #dc3545; text-decoration: none; margin-right: 15px; font-weight: 600; display: none;">🔐 Admin</a>
+                <span id="userEmail"></span>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalTasks">0</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="pendingTasks">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <input id="taskInput" type="text" placeholder="What needs to be done?" class="task-input-main">
+            
+            <div class="task-details">
+                <select id="prioritySelect" class="task-select">
+                    <option value="low">🟢 Low Priority</option>
+                    <option value="medium" selected>🟡 Medium Priority</option>
+                    <option value="high">🟠 High Priority</option>
+                    <option value="urgent">🔴 Urgent</option>
+                </select>
+                
+                <select id="categorySelect" class="task-select">
+                    <option value="general">📋 General</option>
+                    <option value="work">💼 Work</option>
+                    <option value="personal">👤 Personal</option>
+                    <option value="health">❤️ Health</option>
+                    <option value="finance">💰 Finance</option>
+                    <option value="learning">📚 Learning</option>
+                </select>
+                
+                <input id="dueDateInput" type="date" class="task-select" placeholder="Due date">
+                
+                <select id="timeEstimate" class="task-select">
+                    <option value="15">⚡ 15 min</option>
+                    <option value="30" selected>⏱️ 30 min</option>
+                    <option value="60">⏰ 1 hour</option>
+                    <option value="120">🕐 2 hours</option>
+                    <option value="240">🕓 4+ hours</option>
+                </select>
+                
+                <select id="importanceSelect" class="task-select">
+                    <option value="1">1 - Low Impact</option>
+                    <option value="2">2 - Minor</option>
+                    <option value="3" selected>3 - Moderate</option>
+                    <option value="4">4 - Important</option>
+                    <option value="5">5 - Critical</option>
+                </select>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="addTaskButton">➕ Add Task</button>
+                <button id="suggestBtn">🤖 Get Smart Plan</button>
+            </div>
+        </div>
+
+        <ul id="taskList"></ul>
+        
+        <div id="aiResult"></div>
+        
+        <div id="taskPlan" class="task-plan"></div>
+
+        <!-- Reviews Section -->
+        <div style="margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 15px;">
+            <h2 style="color: #667eea; text-align: center; margin-bottom: 20px;">⭐ User Reviews</h2>
+            
+            <div id="reviewDisplay" style="background: white; padding: 25px; border-radius: 10px; min-height: 100px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <div id="reviewContent" style="text-align: center;">
+                    <div style="color: #ffc107; font-size: 24px; margin-bottom: 10px;">★★★★★</div>
+                    <p style="font-style: italic; color: #666; margin-bottom: 10px;">"Loading reviews..."</p>
+                    <small style="color: #999;">- User</small>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button id="showReviewForm" style="padding: 10px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    ✍️ Write a Review
+                </button>
+            </div>
+
+            <div id="reviewForm" style="display: none; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Rate Your Experience</h3>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <span class="star" data-rating="1" style="font-size: 32px; cursor: pointer; color: #ddd;">★</span>
+                    <span class="star" data-rating="2" style="font-size: 32px; cursor: pointer; color: #ddd;">★</span>
+                    <span class="star" data-rating="3" style="font-size: 32px; cursor: pointer; color: #ddd;">★</span>
+                    <span class="star" data-rating="4" style="font-size: 32px; cursor: pointer; color: #ddd;">★</span>
+                    <span class="star" data-rating="5" style="font-size: 32px; cursor: pointer; color: #ddd;">★</span>
+                </div>
+                <textarea id="reviewText" placeholder="Share your experience with Task Buddy... (optional)" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical; font-family: inherit;"></textarea>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button id="submitReview" style="flex: 1; padding: 12px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Submit Review</button>
+                    <button id="cancelReview" style="flex: 1; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

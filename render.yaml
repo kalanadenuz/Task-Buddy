@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: task-buddy
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: task-buddy-db
+          property: connectionString
+
+databases:
+  - name: task-buddy-db
+    plan: free
+    databaseName: taskbuddy
